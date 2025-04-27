@@ -1,8 +1,14 @@
 <?php
-require 'conn.php';
-$id = $_POST['id'];
-$title = $_POST['title'];
+require '../conn.php';
+header('Content-Type: application/json');
 
-$sql = "UPDATE quizzes SET title = '$title' WHERE id = '$id'";
-mysqli_query($conn, $sql)
+$quizId = $_POST['quizId'];
+$title = $_POST['title'];
+$sql = "UPDATE quizzes SET title = ? WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("si", $title, $quizId);
+
+$stmt->execute();
+$stmt->close();
+$conn->close();
 ?>
