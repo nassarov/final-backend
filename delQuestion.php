@@ -1,6 +1,12 @@
 <?php
-require 'conn.php';
-$id = $_POST['id'];
-$sql = "DELETE FROM questions WHERE id = '$id'";
-mysqli_query($conn, $sql);
+require '../conn.php';
+header('Content-Type: application/json');
+$questionId = $_POST['questionId'];
+$sql = "DELETE FROM questions WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $questionId);
+$stmt->execute();
+
+$stmt->close();
+$conn->close();
 ?>
